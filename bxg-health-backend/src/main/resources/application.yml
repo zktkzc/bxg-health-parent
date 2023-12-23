@@ -7,13 +7,12 @@ spring:
   redis:
     host: ${health.redis.host}
     port: ${health.redis.port}
-    #    password: ${health.redis.password}
+    password: ${health.redis.password}
     database: ${health.redis.database}
   main:
     allow-circular-references: true
   datasource:
     druid:
-#      driver-class-name: com.mysql.cj.jdbc.Driver
       driver-class-name: ${health.datasource.driver-class-name}
       url: jdbc:mysql://${health.datasource.host}:${health.datasource.port}/${health.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${health.datasource.username}
@@ -26,6 +25,7 @@ mybatis:
   configuration:
     #开启驼峰命名
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 # 配置打印日志
 logging:
   level:
