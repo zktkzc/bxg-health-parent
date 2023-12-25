@@ -82,7 +82,7 @@ public class CheckItemController {
      * @return 检查项集合
      */
     @GetMapping("/findAll")
-    public Result findAll() {
+    Result findAll() {
         return Result.success(MessageConstant.QUERY_CHECKITEM_SUCCESS, checkItemService.findAll());
     }
 

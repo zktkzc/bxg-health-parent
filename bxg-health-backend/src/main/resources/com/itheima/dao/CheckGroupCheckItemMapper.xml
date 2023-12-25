@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itheima.dao.CheckGroupCheckItemMapper">
+    <insert id="insertBatch">
+        insert into t_checkgroup_checkitem(checkgroup_id, checkitem_id) values
+        <foreach collection="checkitemIds" item="checkitemId" separator=",">
+            (#{checkgroupId}, #{checkitemId})
+        </foreach>
+    </insert>
 </mapper>
