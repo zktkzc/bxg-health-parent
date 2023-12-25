@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.SetmealMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into t_setmeal(name, code, helpCode, sex, age, price, remark, attention, img)
+        values (#{name}, #{code}, #{helpCode}, #{sex}, #{age}, #{price}, #{remark}, #{attention}, #{img})
+    </insert>
+
+    <update id="update">
+        update t_setmeal
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="code != null and code != ''">
+                code = #{code},
+            </if>
+            <if test="helpCode != null and helpCode != ''">
+                helpCode = #{helpCode},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="age != null and age != ''">
+                age = #{age},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="attention != null and attention != ''">
+                attention = #{attention},
+            </if>
+            <if test="img != null and img != ''">
+                img = #{img}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="list" resultType="com.itheima.pojo.Setmeal">
+        select * from t_setmeal
+        <where>
+            <if test="queryString != null and queryString != ''">
+                and name like concat('%', #{queryString}, '%')
+                or code like concat('%', #{queryString}, '%')
+                or helpCode like concat('%', #{queryString}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>
