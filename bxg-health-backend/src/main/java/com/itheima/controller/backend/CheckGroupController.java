@@ -43,12 +43,12 @@ public class CheckGroupController {
     /**
      * 根据套餐id查询关联的检查组id
      *
-     * @param seatmealId 套餐id
+     * @param setmealId 套餐id
      * @return
      */
     @GetMapping("/findCheckGroupIdsBySetmealId")
-    public Result findCheckGroupIdsBySetmealId(Integer seatmealId) {
-        List<Integer> checkgroupIds = checkGroupService.findCheckgroupIdsBySetmealId(seatmealId);
+    public Result findCheckGroupIdsBySetmealId(Integer setmealId) {
+        List<Integer> checkgroupIds = checkGroupService.findCheckgroupIdsBySetmealId(setmealId);
         return Result.success(MessageConstant.QUERY_CHECKGROUP_SUCCESS, checkgroupIds);
     }
 

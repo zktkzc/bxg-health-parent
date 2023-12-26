@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.OrderMapper">
+    <select id="list" resultType="com.itheima.common.vo.OrderVO">
+        select o.*, m.name,m.phoneNumber,m.fileNumber
+        from t_order o, t_member m
+        <where>
+            o.member_id = m.id
+            <if test="queryString != null and queryString != ''">
+                and m.fileNumber like concat('%',#{queryString},'%')
+                or m.name like concat('%',#{queryString},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

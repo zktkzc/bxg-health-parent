@@ -8,6 +8,7 @@ import com.itheima.common.utils.AliOssUtil;
 import com.itheima.pojo.Setmeal;
 import com.itheima.service.SetMealService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,8 @@ public class SetmealController {
     private SetMealService setMealService;
     @Resource
     private AliOssUtil aliOssUtil;
+    @Resource
+    private RedisTemplate redisTemplate;
 
     /**
      * 新增体检套餐
@@ -35,6 +38,7 @@ public class SetmealController {
     @PostMapping("/add")
     public Result add(@RequestParam List<Integer> checkgroupIds, @RequestBody Setmeal setmeal) {
         setMealService.add(checkgroupIds, setmeal);
+        redisTemplate.opsForSet().add("db_images", setmeal.getImg());
         return Result.success(MessageConstant.ADD_SETMEAL_SUCCESS);
     }
 
@@ -44,6 +48,7 @@ public class SetmealController {
     @PostMapping("/edit")
     public Result edit(@RequestParam List<Integer> checkGroupIds, @RequestBody Setmeal setmeal) {
         setMealService.edit(checkGroupIds, setmeal);
+        redisTemplate.opsForSet().add("db_images", setmeal.getImg());
         return Result.success(MessageConstant.EDIT_SETMEAL_SUCCESS);
     }
 
@@ -75,6 +80,7 @@ public class SetmealController {
             String ext = imgFile.getOriginalFilename().substring(index);
             String filename = UUID.randomUUID().toString() + ext;
             String url = aliOssUtil.upload(imgFile.getBytes(), filename);
+            redisTemplate.opsForSet().add("oss_images", url);
             return Result.success(MessageConstant.PIC_UPLOAD_SUCCESS, url);
         } catch (IOException e) {
             log.error("图片上传失败：{}", e.getMessage());
