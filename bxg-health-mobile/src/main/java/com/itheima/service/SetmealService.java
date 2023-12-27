@@ -2,13 +2,15 @@ package com.itheima.service;
 
 import com.itheima.pojo.Setmeal;
 
+import java.util.List;
+
 public interface SetmealService {
     /**
      * 获取所有套餐信息
      *
      * @return
      */
-    Object getSetmeal();
+    List<Setmeal> getSetmeal();
 
     /**
      * 根据id查询套餐详情

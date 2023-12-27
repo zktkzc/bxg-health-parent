@@ -1,4 +1,4 @@
-package com.itheima.dao;
+package com.itheima.mapper;
 
 import com.itheima.pojo.Setmeal;
 import org.apache.ibatis.annotations.Mapper;
