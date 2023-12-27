@@ -40,9 +40,9 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(submitOrderDTO, order);
         order.setOrderStatus(Order.ORDERSTATUS_NO);
         order.setOrderType(Order.ORDERTYPE_WEIXIN);
-        order.setMemberId(memberMapper.selectByPhone(submitOrderDTO.getTelephone()).getId());
-        orderMapper.insert(order);
         Member member = memberMapper.selectByPhone(submitOrderDTO.getTelephone());
+        order.setMemberId(member.getId());
+        orderMapper.insert(order);
         String fileNumber = DateTimeFormatter.ofPattern("yyyyMMdd").format(submitOrderDTO.getOrderDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) + member.getId();
         member.setFileNumber(fileNumber);
         member.setIdCard(submitOrderDTO.getIdCard());
