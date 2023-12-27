@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.Date;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -37,8 +40,18 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(submitOrderDTO, order);
         order.setOrderStatus(Order.ORDERSTATUS_NO);
         order.setOrderType(Order.ORDERTYPE_WEIXIN);
-        order.setMemberId(memberMapper.selectByName(submitOrderDTO.getName()).getId());
+        order.setMemberId(memberMapper.selectByPhone(submitOrderDTO.getTelephone()).getId());
         orderMapper.insert(order);
+        Member member = memberMapper.selectByPhone(submitOrderDTO.getTelephone());
+        String fileNumber = DateTimeFormatter.ofPattern("yyyyMMdd").format(submitOrderDTO.getOrderDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) + member.getId();
+        member.setFileNumber(fileNumber);
+        member.setIdCard(submitOrderDTO.getIdCard());
+        member.setName(submitOrderDTO.getName());
+        member.setSex(submitOrderDTO.getSex());
+        TemporalAccessor instant = DateTimeFormatter.ofPattern("yyyyMMdd").parse(submitOrderDTO.getIdCard().substring(6, 14));
+        Date birthday = Date.from(java.time.LocalDate.from(instant).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        member.setBirthday(birthday);
+        memberMapper.update(member);
         return order.getId();
     }
 
