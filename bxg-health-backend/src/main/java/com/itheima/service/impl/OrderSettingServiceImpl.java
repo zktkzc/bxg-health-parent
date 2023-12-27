@@ -39,10 +39,14 @@ public class OrderSettingServiceImpl implements OrderSettingService {
             XSSFWorkbook excel = new XSSFWorkbook(in);
             XSSFSheet sheet = excel.getSheet("预约设置模板");
             int lastRowNum = sheet.getLastRowNum();
+            LocalDate now = LocalDate.now();
             for (int i = 1; i <= lastRowNum; i++) {
                 Date dateCellValue = sheet.getRow(i).getCell(0).getDateCellValue();
                 ZoneId zoneId = ZoneId.systemDefault();
                 LocalDate orderDate = dateCellValue.toInstant().atZone(zoneId).toLocalDate();
+                if (orderDate.isBefore(now)) {
+                    continue;
+                }
                 String number = String.valueOf(sheet.getRow(i).getCell(1).getNumericCellValue());
                 OrderSetting orderSetting = new OrderSetting();
                 orderSetting.setOrderDate(orderDate);
