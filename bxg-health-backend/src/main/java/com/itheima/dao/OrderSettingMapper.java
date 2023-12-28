@@ -26,6 +26,6 @@ public interface OrderSettingMapper {
     @Select("select * from t_ordersetting where orderDate = #{date}")
     OrderSetting selectByDate(LocalDate date);
 
-    @Insert("insert into t_ordersetting(orderDate,number) values(#{orderDate},#{number})")
+    @Insert("insert into t_ordersetting(orderDate,number,reservations) values(#{orderDate},#{number},#{reservations})")
     void insert(OrderSetting orderSetting);
 }

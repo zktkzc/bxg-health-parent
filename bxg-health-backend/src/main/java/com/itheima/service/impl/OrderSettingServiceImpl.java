@@ -52,6 +52,7 @@ public class OrderSettingServiceImpl implements OrderSettingService {
                 orderSetting.setOrderDate(orderDate);
                 orderSetting.setNumber((int) Double.parseDouble(number));
                 if (orderSettingMapper.selectByDate(orderDate) == null) {
+                    orderSetting.setReservations(0);
                     orderSettingMapper.insert(orderSetting);
                 } else {
                     orderSettingMapper.updateNumberByOrderDate(orderSetting);
@@ -105,6 +106,12 @@ public class OrderSettingServiceImpl implements OrderSettingService {
         }
     }
 
+    /**
+     * 下载模板文件
+     *
+     * @param filename
+     * @param response
+     */
     @Override
     public void download(String filename, HttpServletResponse response) {
         try {
