@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -92,8 +93,7 @@ public class ReportServiceImpl implements ReportService {
         for (SetmealReport setmealReport : setmealReports) {
             String setmealName = setmealMapper.findNameById(setmealReport.getSetmealId());
             double v = setmealReport.getValue() / orderMapper.countSetmealTotal();
-            String s = String.valueOf(v);
-            double proportion = Double.parseDouble(s.substring(0, s.indexOf(".") + 4));
+            double proportion = Double.parseDouble(new DecimalFormat("#.000").format(v));
             HotSetmeal hotSetmeal1 = HotSetmeal.builder()
                     .name(setmealName)
                     .setmeal_count(setmealReport.getValue())
