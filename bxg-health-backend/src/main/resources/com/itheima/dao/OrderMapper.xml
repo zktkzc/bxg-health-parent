@@ -13,4 +13,43 @@
             </if>
         </where>
     </select>
+
+    <select id="countByRegDateAndOrderStatus" resultType="java.lang.Integer">
+        select count(*)
+        from t_order
+        <where>
+            <if test="today != null">
+                and orderDate = #{today}
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                and orderStatus = #{orderStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="countByRegDateAndOrderStatusOfWeek" resultType="java.lang.Integer">
+        select count(*)
+        from t_order
+        <where>
+            <if test="begin != null and end != null">
+                and orderDate between #{begin} and #{end}
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                and orderStatus = #{orderStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="countByRegDateAndOrderStatusOfMonth" resultType="java.lang.Integer">
+        select count(*)
+        from t_order
+        <where>
+            <if test="month != null">
+                and orderDate like concat(#{month}, '%')
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                and orderStatus = #{orderStatus}
+            </if>
+        </where>
+    </select>
 </mapper>

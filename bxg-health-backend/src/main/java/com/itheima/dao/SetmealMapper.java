@@ -38,4 +38,7 @@ public interface SetmealMapper {
      * @return
      */
     Page<Setmeal> list(@Param("queryString") String queryString);
+
+    @Select("select name from t_setmeal where id = #{setmealId}")
+    String findNameById(Integer setmealId);
 }

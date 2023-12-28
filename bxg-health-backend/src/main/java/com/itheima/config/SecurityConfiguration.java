@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Resource
-    private SpringSecurityUserService userService;
+    private SpringSecurityUserService springSecurityUserService;
 
     /**
      * http请求处理方法
@@ -57,6 +57,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(myPasswordEncoder());
+        auth.userDetailsService(springSecurityUserService).passwordEncoder(myPasswordEncoder());
     }
 }
