@@ -4,9 +4,11 @@ import com.itheima.common.dto.SubmitOrderDTO;
 import com.itheima.common.vo.FindOrderByIdVO;
 import com.itheima.mapper.MemberMapper;
 import com.itheima.mapper.OrderMapper;
+import com.itheima.mapper.OrderSettingMapper;
 import com.itheima.mapper.SetmealMapper;
 import com.itheima.pojo.Member;
 import com.itheima.pojo.Order;
+import com.itheima.pojo.OrderSetting;
 import com.itheima.pojo.Setmeal;
 import com.itheima.service.OrderService;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +29,8 @@ public class OrderServiceImpl implements OrderService {
     private MemberMapper memberMapper;
     @Resource
     private SetmealMapper setmealMapper;
+    @Resource
+    private OrderSettingMapper orderSettingMapper;
 
     /**
      * 体检预约
@@ -43,6 +47,18 @@ public class OrderServiceImpl implements OrderService {
         Member member = memberMapper.selectByPhone(submitOrderDTO.getTelephone());
         order.setMemberId(member.getId());
         orderMapper.insert(order);
+        OrderSetting orderSetting = orderSettingMapper.selectByOrderDate(submitOrderDTO.getOrderDate());
+        if (orderSetting == null) {
+            orderSetting = new OrderSetting();
+            orderSetting.setOrderDate(submitOrderDTO.getOrderDate());
+            orderSetting.setNumber(0);
+            orderSetting.setReservations(1);
+            orderSettingMapper.insert(orderSetting);
+        } else {
+            orderSetting.setOrderDate(submitOrderDTO.getOrderDate());
+            orderSetting.setReservations(orderSetting.getReservations() + 1);
+            orderSettingMapper.update(orderSetting);
+        }
         String fileNumber = DateTimeFormatter.ofPattern("yyyyMMdd").format(submitOrderDTO.getOrderDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) + member.getId();
         member.setFileNumber(fileNumber);
         member.setIdCard(submitOrderDTO.getIdCard());
