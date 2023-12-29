@@ -7,7 +7,11 @@
         from t_order o, t_member m
         <where>
             o.member_id = m.id
-            <if test="queryString != null and queryString != ''">
+            <if test="queryString == null">
+                and m.fileNumber like concat('%','','%')
+                or m.name like concat('%','','%')
+            </if>
+            <if test="queryString != null">
                 and m.fileNumber like concat('%',#{queryString},'%')
                 or m.name like concat('%',#{queryString},'%')
             </if>
