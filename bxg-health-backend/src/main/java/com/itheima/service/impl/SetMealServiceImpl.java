@@ -75,9 +75,17 @@ public class SetMealServiceImpl implements SetMealService {
         List<Integer> checkgroupIds = setmealCheckgroupMapper.selectBySetmealId(id);
         List<CheckGroup> checkGroups = new ArrayList<>();
         for (Integer checkgroupId : checkgroupIds) {
-            CheckGroup checkGroup = checkGroupMapper.selectById(id);
+            CheckGroup checkGroup = checkGroupMapper.selectById(checkgroupId);
+            List<Integer> checkItemIds = checkGroupCheckItemMapper.findCheckItemIdsByCheckGroupId(checkgroupId);
+            List<CheckItem> checkItems = new ArrayList<>();
+            for (Integer checkItemId : checkItemIds) {
+                CheckItem checkItem = checkItemMapper.selectById(checkItemId);
+                checkItems.add(checkItem);
+            }
+            checkGroup.setCheckItems(checkItems);
             checkGroups.add(checkGroup);
         }
+        setmeal.setCheckGroups(checkGroups);
         return setmeal;
     }
 
